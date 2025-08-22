@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇯🇵 互動式東京家庭自助旅遊行程 ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Mochiy+Pop+One&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #fefbff;
+            --sidebar-bg: #ffffff;
+            --content-bg: #ffffff;
+            --nav-hover-bg: #fce7f3;
+            --nav-active-bg: linear-gradient(135deg, #f9a8d4, #f472b6);
+            --nav-text: #be185d;
+            --nav-active-text: #ffffff;
+            --card-border: #fbcfe8;
+            --title-color: #db2777;
+            --text-color: #374151;
+            --warning-bg: #fef2f2;
+            --warning-border: #f87171;
+            --tip-bg: #f0fdf4;
+            --tip-border: #4ade80;
+            --tab-bg: #fdf2f8;
+            --tab-active-bg: #f472b6;
+            --tab-text: #db2777;
+            --tab-active-text: #ffffff;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Mochiy+Pop+One', sans-serif;
+        }
+        .main-layout { display: flex; }
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 1.5rem;
+            border-right: 1px solid #f3e8ff;
+            transition: transform 0.3s ease-in-out;
+            z-index: 100;
+        }
+        .main-content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 2.5rem;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 0.75rem;
+            font-weight: 500;
+            color: var(--nav-text);
+            transition: all 0.2s ease;
+        }
+        .nav-link:hover {
+            background-color: var(--nav-hover-bg);
+            transform: translateX(5px);
+        }
+        .nav-link.active {
+            background: var(--nav-active-bg);
+            color: var(--nav-active-text);
+            box-shadow: 0 4px 15px -2px rgba(244, 114, 182, 0.4);
+        }
+        .nav-link svg { transition: all 0.2s ease; }
+        .nav-link.active svg { fill: white; }
+        .content-section {
+            display: none;
+            animation: fadeInContent 0.6s ease;
+        }
+        .content-section.active { display: block; }
+        .card {
+            background-color: var(--content-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -2px rgba(0,0,0,0.05);
+            border: 1px solid var(--card-border);
+        }
+        .details-table{width:100%;border-collapse:collapse;margin-top:1rem;font-size: 0.9rem;}.details-table th,.details-table td{border:1px solid #e5e7eb;padding:.75rem;text-align:left;vertical-align:top}.details-table th{background-color:#f9fafb;width:100px;font-weight:bold;}
+        .warning-box{background-color:var(--warning-bg);border-left:4px solid var(--warning-border);padding:1rem;border-radius:.5rem}
+        .tip-box{background-color:var(--tip-bg);border-left:4px solid var(--tip-border);padding:1rem;border-radius:.5rem}
+        .flight-card{background:linear-gradient(135deg,#fdf2f8,#fce7f3);border:1px solid var(--card-border)}
+        .day-tab-button{background-color:var(--tab-bg);color:var(--tab-text);font-weight:700;padding:.5rem 1.25rem;border-radius:9999px;transition:all .3s ease}.day-tab-button.active{background-color:var(--tab-active-bg);color:var(--tab-active-text);transform:translateY(-2px);box-shadow:0 4px 10px rgba(244,114,182,.3)}
+        .day-plan-content{display:none}.day-plan-content.active{display:block;animation:fadeInContent 0.5s ease;}
+        .summary-box { background-color: #f3f4f6; padding: 1rem; border-radius: 0.5rem; margin-top: 1rem; }
+        .todo-item { display: flex; align-items: flex-start; }
+        .todo-item input { margin-top: 5px; }
+        .mobile-header { display: none; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            body { padding-top: 60px; } /* Add padding to body to avoid overlap with fixed header */
+            .sidebar { display: none; }
+            .main-content { margin-left: 0; width: 100%; padding: 1.5rem; }
+            .mobile-header {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                background-color: rgba(255, 255, 255, 0.9);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                z-index: 90;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            }
+            .mobile-nav-link {
+                flex: 1;
+                text-align: center;
+                padding: 0.75rem 0.25rem;
+                font-size: 0.8rem;
+                color: var(--nav-text);
+                border-bottom: 3px solid transparent;
+                transition: all 0.2s ease;
+            }
+            .mobile-nav-link.active {
+                color: var(--title-color);
+                border-bottom-color: var(--title-color);
+            }
+            .details-table { font-size: 12px; } /* Adaptive font size for table */
+            .details-table th, .details-table td { padding: 0.5rem; } /* Reduce padding */
+        }
+        @keyframes fadeInContent { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
+        /* Modal styles */
+        .modal{display:none;position:fixed;z-index:100;left:0;top:0;width:100%;height:100%;overflow:auto;background-color:rgba(0,0,0,0.6);animation:fadeIn .3s}.modal-content{position:relative;margin:5% auto;padding:20px;width:90%;max-width:800px;animation:slideIn .3s}.close-button{position:absolute;top:-15px;right:-15px;width:36px;height:36px;border-radius:50%;background:#fff;color:#333;font-size:24px;line-height:36px;text-align:center;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,.2)}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes slideIn{from{transform:translateY(-50px)}to{transform:translateY(0)}}.map-container{position:relative;overflow:hidden;width:100%;padding-top:56.25%}.map-container iframe{position:absolute;top:0;left:0;bottom:0;right:0;width:100%;height:100%;border:0}
+    </style>
+</head>
+<body>
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+        <a href="#" class="mobile-nav-link active" onclick="showSection('overview', event)">✨ 總覽</a>
+        <a href="#" class="mobile-nav-link" onclick="showSection('daily-plan', event)">🗓️ 行程</a>
+        <a href="#" class="mobile-nav-link" onclick="showSection('todo-list', event)">✅ 清單</a>
+        <a href="#" class="mobile-nav-link" onclick="showSection('resources', event)">💡 資訊</a>
+    </header>
+
+    <div class="main-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="text-center mb-10">
+                <h1 class="text-2xl font-bold text-[var(--title-color)]">🇯🇵 東京之旅</h1>
+                <p class="text-sm text-gray-400">家庭行程規劃</p>
+            </div>
+            <nav class="space-y-3">
+                <a href="#" class="nav-link active" onclick="showSection('overview', event)"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg><span>行程總覽</span></a>
+                <a href="#" class="nav-link" onclick="showSection('daily-plan', event)"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><span>每日行程</span></a>
+                <a href="#" class="nav-link" onclick="showSection('todo-list', event)"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path></svg><span>要帶物品清單</span></a>
+                <a href="#" class="nav-link" onclick="showSection('resources', event)"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg><span>其他資訊</span></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <section id="overview" class="content-section active">
+                <h2 class="text-3xl font-bold text-[var(--title-color)] mb-6">行程總覽</h2>
+                <div class="space-y-6">
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-purple-600">💰 總預算估計</h3><ul class="list-disc list-inside bg-pink-50 p-4 rounded-md space-y-1"><li><strong>交通+住宿：</strong> 約20,000-30,000元</li><li><strong>用餐+景點：</strong> 約15,000-25,000元</li><li><strong>購物+雜費：</strong> 建議預留10,000-20,000元</li><li><strong>總計：</strong> 45,000-75,000元（不含機票）</li></ul></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-4 text-purple-600">✈️ 航班資訊</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="flight-card p-4 rounded-xl space-y-2"><p class="font-bold text-lg text-pink-600">🛫 去程</p><p><strong>航班：</strong> 中華航空 CI220</p><p><strong>時間：</strong> 09:00 → 13:10</p><p><strong>機場：</strong> 台北松山 (TSA) → 東京羽田 (HND)</p></div><div class="flight-card p-4 rounded-xl space-y-2"><p class="font-bold text-lg text-pink-600">🛬 回程</p><p><strong>航班：</strong> 中華航空 CI221</p><p><strong>時間：</strong> 14:30 → 16:55</p><p><strong>機場：</strong> 東京羽田 (HND) → 台北松山 (TSA)</p></div></div></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-purple-600">🏩 住宿資訊</h3><p><strong>品川王子大飯店 (Shinagawa Prince Hotel) Main Tower</strong> - 位置便利，近品川車站。</p></div>
+                </div>
+            </section>
+
+            <section id="daily-plan" class="content-section">
+                <h2 class="text-3xl font-bold text-[var(--title-color)] mb-6">每日行程</h2>
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-6">
+                    <button class="day-tab-button active" onclick="showDayPlan('plan-day1', event)">Day 1</button>
+                    <button class="day-tab-button" onclick="showDayPlan('plan-day2', event)">Day 2</button>
+                    <button class="day-tab-button" onclick="showDayPlan('plan-day3', event)">Day 3</button>
+                    <button class="day-tab-button" onclick="showDayPlan('plan-day4', event)">Day 4</button>
+                    <button class="day-tab-button" onclick="showDayPlan('plan-day5', event)">Day 5</button>
+                </div>
+                <div id="plan-day1" class="day-plan-content active card">
+                    <h3 class="text-xl font-bold text-center mb-4 text-cyan-500">Day 1: 抵達與東京初體驗</h3>
+                    <div class="space-y-4 mb-4">
+                        <div class="warning-box"><p><strong>重要提醒：</strong> 記得要帶護照！記得預先叫計程車！</p></div>
+                        <div class="tip-box"><h4 class="font-bold">漫遊網路設定 (已預訂9/3 16:00 開通)</h4><p class="text-sm">提醒您開通數據漫遊或申辦方案後，於國外使用時請務必先開啟數據漫遊功能。</p></div>
+                    </div>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>06:00</strong></td><td>起床</td><td>&nbsp;</td><td>-</td></tr><tr><td><strong>07:00</strong></td><td>計程車出發</td><td>前三天預訂</td><td>300台幣</td></tr><tr><td><strong>13:10</strong></td><td>航班抵達東京羽田機場 (HND)</td><td>航班：中華航空CI220。預計花費 1-1.5 小時辦理入境手續與領取行李。</td><td>-</td></tr><tr><td><strong>14:30</strong></td><td>購買 Suica 卡與交通</td><td>- 前往 JR 或京急線的售票處或自動售票機。<br>- 建議每人先儲值 1,000-2,000 日圓。</td><td>約 400-500 日圓/人</td></tr><tr><td><strong>15:30</strong></td><td>飯店 Check-in 與休息</td><td>- 搭乘京急線或 JR 線至品川車站。<br>- 步行至品川王子大飯店辦理入住。</td><td>-</td></tr><tr><td><strong>16:00</strong></td><td>Maxell Aqua Park Shinagawa 水族館</td><td>- 位於品川王子大飯店內。<br>- 觀賞海豚表演、水母展示與互動觸摸池。</td><td>門票：約 5,600 日圓 (4人)</td></tr><tr><td><strong>18:00</strong></td><td>晚餐：藏壽司</td><td>- 享用迴轉壽司，包含兒童菜單與抽獎遊戲。</td><td>約 2,000-3,000 日圓</td></tr><tr><td><strong>19:30</strong></td><td>宵夜購物</td><td>- 前往唐吉訶德品川店（24小時營業）。<br>- 購買水果、零食、飲料。</td><td>約 500-1,000 日圓</td></tr><tr><td><strong>20:00</strong></td><td>返回飯店休息</td><td>準備迎接第二天的行程。</td><td>-</td></tr></tbody></table></div>
+                    <div class="summary-box"><strong>當日總計：</strong> 約 9,600-11,600 日圓 (不含機票與住宿)。<br><strong>亮點：</strong> 水族館互動體驗與藏壽司趣味用餐，讓孩子快速進入狀況！</div>
+                    <button class="mt-4 bg-cyan-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-cyan-600 transition" onclick="showMap('map1')">📍 顯示地圖</button>
+                </div>
+                <div id="plan-day2" class="day-plan-content card">
+                    <h3 class="text-xl font-bold text-center mb-4 text-blue-500">Day 2: 🏰 迪士尼海洋一整天</h3>
+                    <div class="warning-box mb-4"><p><strong>重要提醒：</strong> 記得先下載迪士尼官方 App，才能現場購買 DPA (快速通關)！</p></div>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>05:00-06:00</strong></td><td>起床與交通</td><td>搭乘JR山手線轉京葉線至舞濱站，再轉迪士尼度假區線。</td><td>約 710 日圓/人</td></tr><tr><td><strong>09:00</strong></td><td>全天暢遊東京迪士尼海洋</td><td>- 建議一開園就購買熱門設施的 DPA。<br>- 新園區「夢幻泉鄉」建議使用 DPA 或提早排隊。</td><td>門票：約 2,500 台幣/人</td></tr><tr><td><strong>12:00</strong></td><td>午餐</td><td>在園區內用餐，推薦麥哲倫或水平線灣餐廳。</td><td>約 2,000-3,000 日圓/人</td></tr><tr><td><strong>18:00</strong></td><td>晚餐與夜間表演</td><td>觀賞夜間水上表演「堅信！～夢想之海～」。</td><td>約 2,000-3,000 日圓/人</td></tr><tr><td><strong>20:00</strong></td><td>返回飯店</td><td>預計晚上 8-9 點從迪士尼海洋返回品川。</td><td>交通：約 500 台幣</td></tr></tbody></table></div>
+                    <div class="tip-box mt-4 space-y-2"><h4 class="font-bold">⭐ DPA 與表演秀建議</h4><p><strong>DPA優先：</strong> 翱翔：夢幻奇航、玩具總動員瘋狂遊戲屋、冰雪奇緣之旅。</p><p><strong>表演推薦：</strong> 堅信！～夢想之海～ (夜間)、Big Band Beat (爵士樂表演)。</p></div>
+                    <div class="summary-box"><strong>當日總計：</strong> 約 10,000 台幣 (不含購物)。<br><strong>亮點：</strong> 盡情享受迪士尼海洋的奇幻世界。</div>
+                </div>
+                <div id="plan-day3" class="day-plan-content card">
+                    <h3 class="text-xl font-bold text-center mb-4 text-red-500">Day 3: 🛍️ 文化、購物與澀谷探索</h3>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>07:45</strong></td><td>交通與早餐</td><td>搭 JR 山手線至東京車站，在車站內用餐。</td><td>交通+早餐: 約 4,000 日圓</td></tr><tr><td><strong>09:00</strong></td><td>東京車站與周邊購物</td><td>逛 GranSta Tokyo 伴手禮店、三麗鷗東京站店。</td><td>視個人消費</td></tr><tr><td><strong>10:50</strong></td><td>前往澀谷</td><td>搭 JR 山手線至澀谷站。</td><td>約 500-600 日圓</td></tr><tr><td><strong>12:00</strong></td><td>午餐：敘敘苑</td><td>享用高級燒肉，午間套餐較划算。</td><td>約 10,000-14,000 日圓</td></tr><tr><td><strong>13:30</strong></td><td>澀谷 PARCO 與周邊購物</td><td>逛澀谷 PARCO、3Coins、無印良品、Loft。</td><td>視個人消費</td></tr><tr><td><strong>17:30</strong></td><td>晚餐：一蘭拉麵</td><td>澀谷店，24 小時營業。</td><td>約 3,200-4,800 日圓</td></tr><tr><td><strong>18:30</strong></td><td>銀座二手包包店購物</td><td>逛 Komehyo、Brand Off 等，注意營業時間多至 20:00。</td><td>視個人消費</td></tr><tr><td><strong>20:30</strong></td><td>回程與超市購物</td><td>逛品川站內的成城石井。</td><td>交通: 約 800 日圓</td></tr></tbody></table></div>
+                     <div class="summary-box"><strong>當日總計：</strong> 約 10,500-11,500 台幣起 (不含購物)。</div>
+                </div>
+                <div id="plan-day4" class="day-plan-content card">
+                    <h3 class="text-xl font-bold text-center mb-4 text-yellow-500">Day 4: 🌸 台場與池袋動漫購物</h3>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>08:00-13:00</strong></td><td>池袋主題探索</td><td>- 品川搭JR山手線至池袋。<br>- 參觀 Chiikawa Park。<br>- 品嚐 Chiikawa Ramen。<br>- 逛 Bic Camera。</td><td>交通+餐飲+購物: 約 8,500-28,000 日圓</td></tr><tr><td><strong>13:00-17:30</strong></td><td>台場探索</td><td>- 池袋搭JR轉臨海線至台場。<br>- 觀賞鋼彈像、逛 DiverCity。<br>- 台場海濱公園散步。</td><td>交通+購物: 約 4,000-9,000 日圓</td></tr><tr><td><strong>17:30-20:00</strong></td><td>晚餐與返回</td><td>- 在台場 DiverCity 內用餐。<br>- 搭臨海線轉JR返回品川。</td><td>交通+晚餐: 約 8,000-10,000 日圓</td></tr></tbody></table></div>
+                    <div class="summary-box"><strong>當日總計：</strong> 約 28,460-54,760 日圓 (約 7,115-13,690 台幣)。</div>
+                </div>
+                <div id="plan-day5" class="day-plan-content card">
+                     <h3 class="text-xl font-bold text-center mb-4 text-green-500">Day 5: 🛫 輕鬆離開日</h3>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>07:30-10:30</strong></td><td>飯店退房與周邊活動</td><td>- 飯店或車站早餐。<br>- 整理行李並辦理退房。<br>- 可在品川站內 ecute 短暫購物。</td><td>早餐+購物: 約 5,200-8,800 日圓</td></tr><tr><td><strong>10:30-12:30</strong></td><td>前往機場與午餐</td><td>- 搭乘京急空港線直達羽田機場。<br>- 在機場用餐並辦理登機手續。</td><td>交通+午餐: 約 5,050-7,050 日圓</td></tr><tr><td><strong>12:30-14:30</strong></td><td>安檢與登機</td><td>- 通過安檢與海關。<br>- 逛免稅店，準備登機。</td><td>視個人消費</td></tr></tbody></table></div>
+                    <div class="summary-box"><strong>當日總計：</strong> 約 10,250-24,550 日圓 (約 2,560-6,140 台幣)。</div>
+                </div>
+            </section>
+
+            <section id="todo-list" class="content-section">
+                <h2 class="text-3xl font-bold text-[var(--title-color)] mb-6">要帶物品清單</h2>
+                <div class="space-y-6">
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-pink-500">食 🥪</h3><div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2"><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>特殊飲食所需食材（奶粉）</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>特殊飲食所需食材（保久乳）</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>隨身水壺(Nini)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>隨身水壺(Ada)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>保溫瓶(Mike)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>保溫瓶(Edith)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>小朋友用餐具(剪刀注意！！)</span></label></div></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-blue-500">衣 👕</h3><div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2"><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>替換內衣褲</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>襪子</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>舒適上衣、下著各數件</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>輕便外套、防風防水外套</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>帽子</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>冰巾</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>雨衣/小摺疊傘</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>運動鞋</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>泳衣、泳帽、泳圈臂圈</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>Nini：連身裙、短褲、髮飾</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>Ada：多帶套換衣物、尿布</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>髮夾、髮圈等飾品</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>防曬乳</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>太陽眼鏡(全員)</span></label></div></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-green-500">住 🏨</h3><div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2"><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>檢查住宿訂單</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>安撫娃娃(Nini/Ada)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>臭臭被</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>塑膠袋／壓縮袋</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>急救包（OK蹦等）</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>個人藥品（腸胃藥、退燒藥等）</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>防蚊液、乾洗手、消毒濕紙巾</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>充電器、萬用插座、電源線</span></label></div></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-purple-500">行 🚗</h3><div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2"><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>護照</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3" checked><span>國際駕照</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3" checked><span>交通票券（西瓜卡）*落地買</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>行李箱 (大/中)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>分裝袋、側背包、證件包</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>隨身背包 (全員)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>輕便推車（Yoyo）</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>行動電源 (一包一顆含線)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>行程小本、原子筆 (Nini)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>手錶充電線</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>行動數據 (SIM卡/eSIM)</span></label><div class="todo-item col-span-full sm:col-span-1"><input type="checkbox" class="w-5 h-5 mr-3 shrink-0"><div class="text-sm"><span>乗換NAVITIME App</span><p class="text-xs text-gray-500">支援中文，功能全面，適合外國旅客。</p></div></div></div><h4 class="font-bold text-lg mt-4 mb-2 text-purple-600">行前 7 天確認</h4><div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2"><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>副手機：日本吃到飽方案</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>主手機：台灣門號國際漫遊</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>媽媽手機：eSIM 狀態</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>兒童手錶：漫遊與定位</span></label></div></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-orange-500">育 📖 & 樂 📸</h3><div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2"><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>iPad Air / 電子閱讀器</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>備用手機 (RedMi Note 8)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>藍牙耳機</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>涼風扇 (全員)</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>折疊野餐墊</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>Disney App</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>兌換日幣</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>手機行動支付設定</span></label></div></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-gray-500">最後提醒</h3><div class="grid grid-cols-1 gap-y-2"><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>每日出發前再次檢查重要證件及貴重物</span></label><label class="flex items-center"><input type="checkbox" class="w-5 h-5 mr-3"><span>查閱目的地禁帶物品、海關限令</span></label></div></div>
+                </div>
+            </section>
+
+            <section id="resources" class="content-section">
+                <h2 class="text-3xl font-bold text-[var(--title-color)] mb-6">其他資訊</h2>
+                <div class="card">
+                    <h4 class="font-bold text-lg mb-2">App推薦</h4>
+                    <p class="mb-4">Google Maps, Japan Transit Planner, Tabelog, 東京迪士尼官方App</p>
+                    <h4 class="font-bold text-lg mb-2">📞 緊急聯絡</h4>
+                    <p>台灣駐日代表處：+81-3-3280-7811</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="mapModal" class="modal">
+        <div class="modal-content bg-transparent"><span class="close-button" onclick="closeMap()">&times;</span><div id="mapContent" class="map-container rounded-2xl overflow-hidden"></div></div>
+    </div>
+
+    <script>
+        function showSection(sectionId,event){event.preventDefault();document.querySelectorAll(".content-section").forEach(e=>{e.classList.remove("active")});document.getElementById(sectionId).classList.add("active");document.querySelectorAll(".nav-link, .mobile-nav-link").forEach(e=>{e.classList.remove("active")});const linkSelector=`a[onclick="showSection('${sectionId}', event)"]`;document.querySelectorAll(linkSelector).forEach(e=>e.classList.add("active"));if(window.innerWidth<=768){document.getElementById("sidebar").classList.remove("open")}}
+        function showDayPlan(dayId,event){event.preventDefault();document.querySelectorAll(".day-plan-content").forEach(e=>{e.classList.remove("active")});document.getElementById(dayId).classList.add("active");document.querySelectorAll(".day-tab-button").forEach(e=>{e.classList.remove("active")});event.currentTarget.classList.add("active")}
+        function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+        const mapModal=document.getElementById("mapModal"),mapContent=document.getElementById("mapContent"),maps={map1:'<iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d51906.10616947932!2d139.70962510824444!3d35.59981935008062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x6018640ba43192e3%3A0xd32c3a9d146f8df!2z5pel5pys5p2x5Lqs6YO95aSn55Sw5Y2A576955Sw56m65riv576955Sw5qmf5aC0ICjmnbHkuqzlnIvpmpvmqZ_loLQpIChITkQp!3m2!1d35.5482964!2d139.7779951!4m5!1s0x60188a5760190fa7%3A0x762af933935909b0!2z5ZOB5bed546L5a2Q5aSn6aOv5bqXIDQgQ2hvbWUtMTAtMzAgVGFrYW5hd2EsIE1pbmF0byBDaXR5LCBUb2t5byAxMDgtODYxMeaXpeacrA!3m2!1d35.6279119!2d139.7367526!5e0!3m2!1szh-TW!2stw!4v1755583534678!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'};
+        function showMap(mapId){mapContent.innerHTML=maps[mapId];mapModal.style.display="block"}
+        function closeMap(){mapModal.style.display="none";mapContent.innerHTML=""}
+        window.onclick=function(event){if(event.target==mapModal){closeMap()}};
+    </script>
+</body>
+</html>
