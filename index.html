@@ -102,7 +102,7 @@
         
         /* Responsive */
         @media (max-width: 768px) {
-            body { padding-top: 60px; } /* Add padding to body to avoid overlap with fixed header */
+            body { padding-top: 60px; }
             .sidebar { display: none; }
             .main-content { margin-left: 0; width: 100%; padding: 1.5rem; }
             .mobile-header {
@@ -121,7 +121,7 @@
                 flex: 1;
                 text-align: center;
                 padding: 0.75rem 0.25rem;
-                font-size: 0.8rem;
+                font-size: 0.75rem; /* Adjusted font size for 5 items */
                 color: var(--nav-text);
                 border-bottom: 3px solid transparent;
                 transition: all 0.2s ease;
@@ -130,8 +130,8 @@
                 color: var(--title-color);
                 border-bottom-color: var(--title-color);
             }
-            .details-table { font-size: 12px; } /* Adaptive font size for table */
-            .details-table th, .details-table td { padding: 0.5rem; } /* Reduce padding */
+            .details-table { font-size: 12px; }
+            .details-table th, .details-table td { padding: 0.5rem; }
         }
         @keyframes fadeInContent { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
         /* Modal styles */
@@ -143,6 +143,7 @@
     <header class="mobile-header">
         <a href="#" class="mobile-nav-link active" onclick="showSection('overview', event)">✨ 總覽</a>
         <a href="#" class="mobile-nav-link" onclick="showSection('daily-plan', event)">🗓️ 行程</a>
+        <a href="#" class="mobile-nav-link" onclick="showSection('expenses', event)">💰 花費</a>
         <a href="#" class="mobile-nav-link" onclick="showSection('todo-list', event)">✅ 清單</a>
         <a href="#" class="mobile-nav-link" onclick="showSection('resources', event)">💡 資訊</a>
     </header>
@@ -157,6 +158,7 @@
             <nav class="space-y-3">
                 <a href="#" class="nav-link active" onclick="showSection('overview', event)"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg><span>行程總覽</span></a>
                 <a href="#" class="nav-link" onclick="showSection('daily-plan', event)"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg><span>每日行程</span></a>
+                <a href="#" class="nav-link" onclick="showSection('expenses', event)"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M2 4a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V4zm2 2a1 1 0 00-1 1v2a1 1 0 001 1h12a1 1 0 001-1V7a1 1 0 00-1-1H4zM4 12a1 1 0 011-1h1a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1v-2zm5 0a1 1 0 011-1h1a1 1 0 011 1v2a1 1 0 01-1 1h-1a1 1 0 01-1-1v-2zm5 0a1 1 0 011-1h1a1 1 0 011 1v2a1 1 0 01-1 1h-1a1 1 0 01-1-1v-2z"></path></svg><span>每日花費</span></a>
                 <a href="#" class="nav-link" onclick="showSection('todo-list', event)"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path></svg><span>要帶物品清單</span></a>
                 <a href="#" class="nav-link" onclick="showSection('resources', event)"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg><span>其他資訊</span></a>
             </nav>
@@ -216,6 +218,56 @@
                 </div>
             </section>
 
+            <section id="expenses" class="content-section">
+                <h2 class="text-3xl font-bold text-[var(--title-color)] mb-6">每日花費紀錄</h2>
+                <div class="card mb-6">
+                    <h3 class="font-bold text-xl mb-4 text-purple-600">新增一筆花費</h3>
+                    <form id="expense-form" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+                        <div class="col-span-1"><label class="block text-sm font-medium">日期</label><select id="expense-date" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"><option>9/3</option><option>9/4</option><option>9/5</option><option>9/6</option><option>9/7</option></select></div>
+                        <div class="col-span-1"><label class="block text-sm font-medium">時間</label><input type="time" id="expense-time" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"></div>
+                        <div class="col-span-1"><label class="block text-sm font-medium">地點</label><input type="text" id="expense-location" placeholder="如: 澀谷" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"></div>
+                        <div class="col-span-1"><label class="block text-sm font-medium">類別</label><select id="expense-category" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"><option>餐飲</option><option>購物</option><option>交通</option><option>景點門票</option><option>住宿</option><option>雜費</option><option>其他</option></select></div>
+                        <div class="col-span-1"><label class="block text-sm font-medium">描述*</label><input type="text" id="expense-desc" placeholder="如: 一蘭拉麵" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm"></div>
+                        <div class="col-span-1"><label class="block text-sm font-medium">日幣 (JPY)*</label><input type="number" id="expense-jpy" placeholder="1000" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm"></div>
+                        <div class="col-span-1"><label class="block text-sm font-medium">支付方式</label><select id="expense-payment" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"><option>現鈔</option><option>Suica</option><option>信用卡</option><option>行動支付</option></select></div>
+                        <div class="col-span-1"><label class="block text-sm font-medium">卡片/備註</label><input type="text" id="expense-notes" placeholder="如: 熊本熊卡" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"></div>
+                        <div class="col-span-full"><button type="submit" class="w-full bg-pink-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-pink-600 transition shadow-md">新增紀錄</button></div>
+                    </form>
+                </div>
+                <div class="card">
+                     <div class="flex flex-wrap justify-between items-center mb-4">
+                        <h3 class="font-bold text-xl text-purple-600">花費總覽</h3>
+                        <button id="export-md-btn" class="bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition shadow-md text-sm">匯出 Markdown</button>
+                    </div>
+                    <div class="overflow-x-auto mb-4">
+                        <table class="w-full text-sm">
+                            <thead><tr class="bg-gray-50"><th class="p-2 text-left">日期</th><th class="p-2 text-left">地點</th><th class="p-2 text-left">描述</th><th class="p-2 text-left">日幣</th><th class="p-2 text-left">台幣</th><th class="p-2 text-left">支付</th><th class="p-2 text-left">卡片/備註</th><th class="p-2"></th></tr></thead>
+                            <tbody id="expense-list"></tbody>
+                        </table>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-bold text-xl mt-6 mb-4 text-purple-600">依支付方式統計</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead><tr class="bg-gray-50"><th class="p-2 text-left">支付方式</th><th class="p-2 text-left">總金額 (JPY)</th><th class="p-2 text-left">總金額 (TWD)</th></tr></thead>
+                                    <tbody id="summary-list"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-xl mt-6 mb-4 text-purple-600">依卡片統計</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm">
+                                    <thead><tr class="bg-gray-50"><th class="p-2 text-left">卡片/備註</th><th class="p-2 text-left">總金額 (JPY)</th><th class="p-2 text-left">總金額 (TWD)</th></tr></thead>
+                                    <tbody id="card-summary-list"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section id="todo-list" class="content-section">
                 <h2 class="text-3xl font-bold text-[var(--title-color)] mb-6">要帶物品清單</h2>
                 <div class="space-y-6">
@@ -245,13 +297,176 @@
     </div>
 
     <script>
-        function showSection(sectionId,event){event.preventDefault();document.querySelectorAll(".content-section").forEach(e=>{e.classList.remove("active")});document.getElementById(sectionId).classList.add("active");document.querySelectorAll(".nav-link, .mobile-nav-link").forEach(e=>{e.classList.remove("active")});const linkSelector=`a[onclick="showSection('${sectionId}', event)"]`;document.querySelectorAll(linkSelector).forEach(e=>e.classList.add("active"));if(window.innerWidth<=768){document.getElementById("sidebar").classList.remove("open")}}
+        function showSection(sectionId,event){event.preventDefault();document.querySelectorAll(".content-section").forEach(e=>{e.classList.remove("active")});document.getElementById(sectionId).classList.add("active");document.querySelectorAll(".nav-link, .mobile-nav-link").forEach(e=>{e.classList.remove("active")});const linkSelector=`a[onclick="showSection('${sectionId}', event)"]`;document.querySelectorAll(linkSelector).forEach(e=>e.classList.add("active"));if(window.innerWidth<=768){document.getElementById("sidebar")?.classList.remove("open")}}
         function showDayPlan(dayId,event){event.preventDefault();document.querySelectorAll(".day-plan-content").forEach(e=>{e.classList.remove("active")});document.getElementById(dayId).classList.add("active");document.querySelectorAll(".day-tab-button").forEach(e=>{e.classList.remove("active")});event.currentTarget.classList.add("active")}
-        function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
-        const mapModal=document.getElementById("mapModal"),mapContent=document.getElementById("mapContent"),maps={map1:'<iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d51906.10616947932!2d139.70962510824444!3d35.59981935008062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x6018640ba43192e3%3A0xd32c3a9d146f8df!2z5pel5pys5p2x5Lqs6YO95aSn55Sw5Y2A576955Sw56m65riv576955Sw5qmf5aC0ICjmnbHkuqzlnIvpmpvmqZ_loLQpIChITkQp!3m2!1d35.5482964!2d139.7779951!4m5!1s0x60188a5760190fa7%3A0x762af933935909b0!2z5ZOB5bed546L5a2Q5aSn6aOv5bqXIDQgQ2hvbWUtMTAtMzAgVGFrYW5hd2EsIE1pbmF0byBDaXR5LCBUb2t5byAxMDgtODYxMeaXpeacrA!3m2!1d35.6279119!2d139.7367526!5e0!3m2!1szh-TW!2stw!4v1755583534678!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'};
+        function toggleSidebar(){document.getElementById("sidebar")?.classList.toggle("open")}
+        const mapModal=document.getElementById("mapModal"),mapContent=document.getElementById("mapContent"),maps={map1:'<iframe src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d51906.10616947932!2d19.70962510824444!3d35.59981935008062!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x6018640ba43192e3%3A0xd32c3a9d146f8df!2z5pel5pys5p2x5Lqs6YO95aSn55Sw5Y2A576955Sw56m65riv576955Sw5qmf5aC0ICjmnbHkuqzlnIvpmpvmqZ_loLQpIChITkQp!3m2!1d35.5482964!2d139.7779951!4m5!1s0x60188a5760190fa7%3A0x762af933935909b0!2z5ZOB5bed546L5a2Q5aSn6aOv5bqXIDQgQ2hvbWUtMTAtMzAgVGFrYW5hd2EsIE1pbmF0byBDaXR5LCBUb2t5byAxMDgtODYxMeaXpeacrA!3m2!1d35.6279119!2d139.7367526!5e0!3m2!1szh-TW!2stw!4v1755583534678!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'};
         function showMap(mapId){mapContent.innerHTML=maps[mapId];mapModal.style.display="block"}
         function closeMap(){mapModal.style.display="none";mapContent.innerHTML=""}
         window.onclick=function(event){if(event.target==mapModal){closeMap()}};
+
+        // --- Expense Tracker Logic ---
+        const expenseForm = document.getElementById('expense-form');
+        const expenseList = document.getElementById('expense-list');
+        const summaryList = document.getElementById('summary-list');
+        const cardSummaryList = document.getElementById('card-summary-list');
+        const exportBtn = document.getElementById('export-md-btn');
+        const FIXED_RATE = 0.21;
+        const storageKey = 'tokyoTripExpenses_v3'; 
+
+        function getExpenses() { return JSON.parse(localStorage.getItem(storageKey)) || []; }
+        function saveExpenses(expenses) { localStorage.setItem(storageKey, JSON.stringify(expenses)); }
+
+        function renderExpenses() {
+            const expenses = getExpenses();
+            expenseList.innerHTML = '';
+            
+            if (expenses.length === 0) {
+                expenseList.innerHTML = '<tr><td colspan="9" class="text-center text-gray-400 py-4">尚未有任何花費紀錄</td></tr>';
+            } else {
+                expenses.forEach((expense, index) => {
+                    const twd = Math.round(expense.jpy * FIXED_RATE);
+                    const row = document.createElement('tr');
+                    row.className = 'border-b';
+                    row.innerHTML = `
+                        <td class="p-2">${expense.date || '-'}</td>
+                        <td class="p-2">${expense.location || '-'}</td>
+                        <td class="p-2">${expense.desc}</td>
+                        <td class="p-2">${expense.jpy.toLocaleString()}</td>
+                        <td class="p-2">${twd.toLocaleString()}</td>
+                        <td class="p-2">${expense.payment}</td>
+                        <td class="p-2">${expense.notes || '-'}</td>
+                        <td class="p-2 text-center">
+                            <button onclick="deleteExpense(${index})" class="text-red-500 hover:text-red-700 text-xs">刪除</button>
+                        </td>
+                    `;
+                    expenseList.appendChild(row);
+                });
+            }
+            renderSummary(expenses);
+        }
+
+        function renderSummary(expenses) {
+            const paymentSummary = { '現鈔': {jpy:0, twd:0}, 'Suica': {jpy:0, twd:0}, '信用卡': {jpy:0, twd:0}, '行動支付': {jpy:0, twd:0} };
+            const cardSummary = {};
+            let totalJpy = 0;
+            let totalTwd = 0;
+
+            expenses.forEach(expense => {
+                const twd = Math.round(expense.jpy * FIXED_RATE);
+                if (paymentSummary.hasOwnProperty(expense.payment)) {
+                    paymentSummary[expense.payment].jpy += expense.jpy;
+                    paymentSummary[expense.payment].twd += twd;
+                }
+                if (expense.payment === '信用卡' && expense.notes) {
+                    const cardName = expense.notes.trim();
+                    if (!cardSummary[cardName]) {
+                        cardSummary[cardName] = { jpy: 0, twd: 0 };
+                    }
+                    cardSummary[cardName].jpy += expense.jpy;
+                    cardSummary[cardName].twd += twd;
+                }
+                totalJpy += expense.jpy;
+                totalTwd += twd;
+            });
+
+            summaryList.innerHTML = '';
+            for (const method in paymentSummary) {
+                const row = document.createElement('tr');
+                row.className = 'border-b';
+                row.innerHTML = `<td class="p-2 font-medium">${method}</td><td class="p-2">${paymentSummary[method].jpy.toLocaleString()} JPY</td><td class="p-2">${paymentSummary[method].twd.toLocaleString()} TWD</td>`;
+                summaryList.appendChild(row);
+            }
+            const totalRow = document.createElement('tr');
+            totalRow.className = 'font-bold bg-gray-50';
+            totalRow.innerHTML = `<td class="p-2">總計</td><td class="p-2">${totalJpy.toLocaleString()} JPY</td><td class="p-2">${totalTwd.toLocaleString()} TWD</td>`;
+            summaryList.appendChild(totalRow);
+            
+            cardSummaryList.innerHTML = '';
+            if (Object.keys(cardSummary).length > 0) {
+                 for (const card in cardSummary) {
+                    const row = document.createElement('tr');
+                    row.className = 'border-b';
+                    row.innerHTML = `<td class="p-2 font-medium">${card}</td><td class="p-2">${cardSummary[card].jpy.toLocaleString()} JPY</td><td class="p-2">${cardSummary[card].twd.toLocaleString()} TWD</td>`;
+                    cardSummaryList.appendChild(row);
+                }
+            } else {
+                cardSummaryList.innerHTML = '<tr><td colspan="3" class="text-center text-gray-400 py-4">無信用卡紀錄</td></tr>';
+            }
+        }
+
+        function addExpense(event) {
+            event.preventDefault();
+            const newExpense = {
+                date: document.getElementById('expense-date').value,
+                time: document.getElementById('expense-time').value,
+                location: document.getElementById('expense-location').value,
+                category: document.getElementById('expense-category').value,
+                desc: document.getElementById('expense-desc').value,
+                jpy: parseFloat(document.getElementById('expense-jpy').value),
+                payment: document.getElementById('expense-payment').value,
+                notes: document.getElementById('expense-notes').value,
+            };
+
+            if (!newExpense.desc || isNaN(newExpense.jpy)) { return; }
+
+            const expenses = getExpenses();
+            expenses.push(newExpense);
+            saveExpenses(expenses);
+            renderExpenses();
+            expenseForm.reset();
+        }
+
+        function deleteExpense(index) {
+            const expenses = getExpenses();
+            expenses.splice(index, 1);
+            saveExpenses(expenses);
+            renderExpenses();
+        }
+
+        function exportToMarkdown() {
+            const expenses = getExpenses();
+            if (expenses.length === 0) { return; }
+
+            let mdContent = '| 日期 | 時間 | 地點 | 類別 | 描述 | 日幣 | 台幣 | 支付 | 卡片/備註 |\n';
+            mdContent += '|:---|:---|:---|:---|:---|---:|---:|:---|:---|\n';
+
+            expenses.forEach(e => {
+                const twd = Math.round(e.jpy * FIXED_RATE);
+                mdContent += `| ${e.date || ''} | ${e.time || ''} | ${e.location || ''} | ${e.category || ''} | ${e.desc} | ${e.jpy} | ${twd} | ${e.payment} | ${e.notes || ''} |\n`;
+            });
+            
+            mdContent += '\n### 依支付方式統計\n\n';
+            mdContent += '| 支付方式 | 總金額 (JPY) | 總金額 (TWD) |\n|:---|---:|---:|\n';
+            document.getElementById('summary-list').querySelectorAll('tr').forEach(row => {
+                const cells = row.querySelectorAll('td');
+                mdContent += `| ${cells[0].innerText} | ${cells[1].innerText.replace(' JPY', '')} | ${cells[2].innerText.replace(' TWD', '')} |\n`;
+            });
+
+            mdContent += '\n### 依卡片統計\n\n';
+            mdContent += '| 卡片/備註 | 總金額 (JPY) | 總金額 (TWD) |\n|:---|---:|---:|\n';
+             document.getElementById('card-summary-list').querySelectorAll('tr').forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length > 1) { // Avoid empty row
+                    mdContent += `| ${cells[0].innerText} | ${cells[1].innerText.replace(' JPY', '')} | ${cells[2].innerText.replace(' TWD', '')} |\n`;
+                }
+            });
+
+            const blob = new Blob([mdContent], { type: 'text/markdown;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tokyo-expenses.md';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        expenseForm.addEventListener('submit', addExpense);
+        exportBtn.addEventListener('click', exportToMarkdown);
+        document.addEventListener('DOMContentLoaded', renderExpenses);
+
     </script>
 </body>
 </html>
