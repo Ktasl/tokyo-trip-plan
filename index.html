@@ -174,7 +174,60 @@
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- ... existing content sections ... -->
+            <section id="overview" class="content-section active">
+                <h2 class="text-3xl font-bold text-[var(--title-color)] mb-6">行程總覽</h2>
+                <div class="space-y-6">
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-purple-600">💰 總預算估計</h3><ul class="list-disc list-inside bg-pink-50 p-4 rounded-md space-y-1"><li><strong>交通+住宿：</strong> 約20,000-30,000元</li><li><strong>用餐+景點：</strong> 約15,000-25,000元</li><li><strong>購物+雜費：</strong> 建議預留10,000-20,000元</li><li><strong>總計：</strong> 45,000-75,000元（不含機票）</li></ul></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-4 text-purple-600">✈️ 航班資訊</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><div class="flight-card p-4 rounded-xl space-y-2"><p class="font-bold text-lg text-pink-600">🛫 去程</p><p><strong>航班：</strong> 中華航空 CI220</p><p><strong>時間：</strong> 09:00 → 13:10</p><p><strong>機場：</strong> 台北松山 (TSA) → 東京羽田 (HND)</p></div><div class="flight-card p-4 rounded-xl space-y-2"><p class="font-bold text-lg text-pink-600">🛬 回程</p><p><strong>航班：</strong> 中華航空 CI221</p><p><strong>時間：</strong> 14:30 → 16:55</p><p><strong>機場：</strong> 東京羽田 (HND) → 台北松山 (TSA)</p></div></div><div class="caution-box mt-4 text-sm"><h4 class="font-bold mb-2">上機注意</h4><ol class="list-decimal list-inside space-y-1"><li>托運行李內請勿置放貴重物品及鋰電池。</li><li>指甲刀、剪刀等刀具類請置放於托運行李。</li><li>乳液狀物品隨身攜帶，每瓶限100CC，並置於透明夾鍊袋。</li></ol></div></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-purple-600">🏩 住宿資訊</h3><p><strong>品川王子大飯店 (Shinagawa Prince Hotel) Main Tower</strong> - 位置便利，近品川車站。</p></div>
+                    <div class="card"><h3 class="font-bold text-xl mb-3 text-purple-600">💳 旅行支付方式建議</h3><ol class="list-decimal list-inside space-y-2 text-sm"><li><strong>行動支付 (玉山Wallet+PayPay)</strong>: <br><span class="text-xs text-gray-500">直接扣日圓帳戶，享回饋，適用範圍廣。</span></li><li><strong>交通卡 (Suica/ICOCA)</strong>: <br><span class="text-xs text-gray-500">方便搭乘交通及小額支付。</span></li><li><strong>信用卡 (玉山熊本熊卡)</strong>: <br><span class="text-xs text-gray-500">適合指定通路高單價購物。</span></li><li><strong>信用卡 (聯邦吉鶴卡)</strong>: <br><span class="text-xs text-gray-500">適用於一般消費。</span></li><li><strong>現鈔 (日圓)</strong>: <br><span class="text-xs text-gray-500">備用，適用於小店鋪。</span></li></ol></div>
+                </div>
+            </section>
+
+            <section id="daily-plan" class="content-section">
+                <h2 class="text-3xl font-bold text-[var(--title-color)] mb-6">每日行程</h2>
+                <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-6">
+                    <button class="day-tab-button active" onclick="showDayPlan('plan-day1', event)">Day 1</button>
+                    <button class="day-tab-button" onclick="showDayPlan('plan-day2', event)">Day 2</button>
+                    <button class="day-tab-button" onclick="showDayPlan('plan-day3', event)">Day 3</button>
+                    <button class="day-tab-button" onclick="showDayPlan('plan-day4', event)">Day 4</button>
+                    <button class="day-tab-button" onclick="showDayPlan('plan-day5', event)">Day 5</button>
+                </div>
+                <!-- Day 1 Content -->
+                <div id="plan-day1" class="day-plan-content active card">
+                    <h3 class="text-xl font-bold text-center mb-4 text-cyan-500">Day 1: ✈️ 抵達與台場初體驗</h3>
+                    <div class="space-y-4 mb-4">
+                        <div class="warning-box"><p><strong>重要提醒：</strong><br>出發前要先填寫 <a href="https://event.liontravel.com/zh-tw/trends/japantravelinformation" target="_blank" class="text-blue-600 hover:underline">Visit Japan Web</a> 三人<br>記得要帶護照！<br>記得預先叫計程車！<br>檢查日幣第一天 30,000<br><a href="https://tokiomarinenichido.jp/zh-hant/china2/?fbclid=IwZXh0bgNhZW0CMTAAYnJpZBExRk82Z3ZDV3lYcktjTnV1cQEePZSrkjOlpqFNKIackAUfqU8XL5aFzz0AtZMVKHSC4WZV3laxQno3_qPqqAM_aem_M7uRbknqYTLcb3LMXsKLkQ" target="_blank" class="text-blue-600 hover:underline">落地後日本當地旅平險(兩人)</a></p></div>
+                        <div class="tip-box text-sm"><h4 class="font-bold mb-2">漫遊網路設定 (已預訂9/3 07:00 開通)</h4><p><strong>iOS系統</strong>：點選【設定】→ 關閉【飛航模式】及【Wi-Fi功能】→ 點選【行動服務】→點選【行動數據選項】→開啟【數據漫遊】。</p><p><strong>Android系統</strong>：點選【設定】→關閉【飛航模式】及【Wi-Fi功能】→點選【連接】→點選【行動網路】→開啟【數據漫遊】。</p><p><strong>eSIM</strong>:開啟 Klook App > 帳戶 > 預訂 > 點選“激活”。</p></div>
+                    </div>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>06:00</strong></td><td>起床</td><td>&nbsp;</td><td>-</td></tr><tr><td><strong>07:00</strong></td><td>計程車出發</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td><strong>13:10</strong></td><td>航班抵達東京羽田機場 (HND)</td><td>-預計花費 1-1.5 小時辦理入境手續與領取行李。</td><td>-</td></tr><tr><td><strong>14:30</strong></td><td>購買 Suica 卡與交通</td><td>- **首次儲值：** 建議首次儲值5,000日圓/人 by 玉山Wallet+熊本熊卡。</td><td>&nbsp;</td></tr><tr><td><strong>15:30</strong></td><td>飯店 Check-in 與休息</td><td>- 搭乘京急線或 JR 線至品川車站。<br>- 步行至**品川王子大飯店**辦理入住。</td><td>-</td></tr><tr><td><strong>16:10–16:30</strong></td><td>彩虹巴士→台場</td><td>- 拍站牌時刻</td><td>只能付現, 840円/4人</td></tr><tr><td><strong>16:30–20:30</strong></td><td>台場</td><td>- 逛街吃飯<br>- 推薦京都勝牛 (DiverCity Tokyo Plaza店)</td><td>晚餐：約 2,000-3,000円</td></tr><tr><td><strong>20:30–21:00</strong></td><td>回品川</td><td>備援：百合海鷗/臨海線</td><td>只能付現, 840円/4人</td></tr><tr><td><strong>21:00</strong></td><td>宵夜購物</td><td>- 前往唐吉訶德品川店（24小時營業）。</td><td>購物：約 500-1,000円</td></tr><tr><td><strong>22:00</strong></td><td>返回飯店休息</td><td>- 享用宵夜，準備迎接第二天的行程。</td><td>-</td></tr></tbody></table></div>
+                    <div class="summary-box"><strong>當日總計：</strong> 約 4,180-5,680 日圓 (不含機票與住宿)。<br><strong>亮點：</strong> 高效利用抵達日傍晚，直衝台場體驗東京灣夜景與美食！</div>
+                    <button class="mt-4 bg-cyan-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-cyan-600 transition" onclick="showMap('map1')">📍 顯示地圖</button>
+                </div>
+                <!-- Day 2 Content -->
+                <div id="plan-day2" class="day-plan-content card">
+                    <h3 class="text-xl font-bold text-center mb-4 text-blue-500">Day 2: 🏰 迪士尼海洋一整天</h3>
+                    <div class="warning-box mb-4"><p><strong>重要提醒：</strong> 記得先下載迪士尼官方 App！記得帶 18,000 日幣包車尾款。</p></div>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>05:00</strong></td><td>起床</td><td>- 早餐為前天準備輕食。</td><td></td></tr><tr><td><strong>07:00</strong></td><td>包車前往迪士尼</td><td>- 搭乘包車至海洋樂園門口。</td><td></td></tr><tr><td><strong>09:00</strong></td><td>全天暢遊東京迪士尼海洋</td><td>- 建議一開園就購買熱門設施的 DPA。<br>- 新園區「夢幻泉鄉」建議使用 DPA 或提早排隊。</td><td>門票：約 2,500 台幣/人</td></tr><tr><td><strong>12:00</strong></td><td>午餐</td><td>在園區內用餐，推薦麥哲倫或水平線灣餐廳。</td><td>約 2,000-3,000 日圓/人</td></tr><tr><td><strong>18:00</strong></td><td>晚餐與夜間表演</td><td>觀賞夜間水上表演「堅信！～夢想之海～」。</td><td>約 2,000-3,000 日圓/人</td></tr><tr><td><strong>22:00</strong></td><td>返回飯店</td><td>- 晚上 10 點從迪士尼海洋搭包車返回。</td><td>交付尾款 18,000 日幣</td></tr></tbody></table></div>
+                    <div class="summary-box"><strong>亮點：</strong> 盡情享受迪士尼海洋的奇幻世界。</div>
+                </div>
+                <!-- Day 3 Content -->
+                <div id="plan-day3" class="day-plan-content card">
+                    <h3 class="text-xl font-bold text-center mb-4 text-red-500">Day 3: 澀谷 & 東京車站夜間探索</h3>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>~10:30</strong></td><td>起床 & 飯店早餐</td><td>- **睡到自然醒！** 在飯店或品川站周邊悠閒地享用早餐。</td><td>約 4,000円</td></tr><tr><td><strong>10:30–11:00</strong></td><td>交通：品川 → 澀谷</td><td>- 搭乘 **JR 山手線** (外環方向)，約 15 分鐘直達澀谷。</td><td>約 180円/人</td></tr><tr><td><strong>11:00–12:00</strong></td><td>澀谷初步探索</td><td>- 抵達後可以先在車站周邊熟悉環境，或去看看忠犬八公像。</td><td>-</td></tr><tr><td><strong>12:00–13:30</strong></td><td>午餐：敘敘苑</td><td>- 敘敘苑澀谷店(地址：東京都澀谷區宇田川町26-2 Sunrui大厦8F)。<br>- 午間套餐較划算，享用高級燒肉。</td><td>約 10,000-14,000円</td></tr><tr><td><strong>13:30–14:15</strong></td><td>澀谷 PARCO</td><td>- 主攻 3Coins，快速瀏覽其他感興趣的樓層。</td><td>視個人消費</td></tr><tr><td><strong>14:15–14:45</strong></td><td>Disney Store 旗艦店</td><td>- 從 PARCO 步行約 5-7 分鐘即可抵達。<br>- 欣賞城堡般的外觀，入內選購迪士尼商品。</td><td>視個人消費</td></tr><tr><td><strong>14:45–15:30</strong></td><td>Loft</td><td>- 前往澀谷 Loft 選購文具與生活雜貨。<br>- 地址：東京都澀谷區宇田川町21-1</td><td>視個人消費</td></tr><tr><td><strong>15:30–16:00</strong></td><td>交通：澀谷 → 東京車站</td><td>- 搭乘 **JR 山手線** (內環方向)，約 25 分鐘直達東京車站。</td><td>約 210円/人</td></tr><tr><td><strong>16:00–17:00</strong></td><td>晚餐：一蘭拉麵 (八重洲店)</td><td>- **離峰用餐！** 從東京車站八重洲口步行約 5-7 分鐘。<br>- 這個時間點幾乎不用排隊。</td><td>約 3,200-4,800円</td></tr><tr><td><strong>17:00–18:30</strong></td><td>東京キャラクターストリート</td><td>- **本日亮點！** 專心逛角色一番街。<br>- **重點店家：** **三麗鷗東京站店**。</td><td>視個人消費</td></tr><tr><td><strong>18:30–19:15</strong></td><td>GranSta Tokyo 伴手禮</td><td>- 逛 GranSta Tokyo，選購東京限定的伴手禮。</td><td>視個人消費</td></tr><tr><td><strong>19:15–19:45</strong></td><td>東京車站夜景</td><td>- 逛完後，穿過車站通道至丸之內側。<br>- 欣賞紅磚建築的夜景並拍照留念。</td><td>-</td></tr><tr><td><strong>19:45~</strong></td><td>返回飯店</td><td>- 直接從丸之內口的月台搭乘 JR 山手線或上野東京線快速返回品川。</td><td>約 180円/人</td></tr></tbody></table></div>
+                </div>
+                <!-- Day 4 Content -->
+                <div id="plan-day4" class="day-plan-content card">
+                    <h3 class="text-xl font-bold text-center mb-4 text-yellow-500">Day 4: 池袋與銀座動漫購物</h3>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>08:00–09:00</strong></td><td>起床 & 飯店早餐</td><td>- 可以在飯店或品川站內從容地享用早餐。</td><td>約 4,000円</td></tr><tr><td><strong>09:00–09:45</strong></td><td>交通：品川 → 池袋</td><td>- 搭乘 **JR 山手線** (外環方向)，約 30 分鐘直達池袋。</td><td>約 210円/人</td></tr><tr><td><strong>09:45–10:45</strong></td><td>Bic Camera 池袋本店購物</td><td>- **10:00 開門**。從車站東口步行 3-5 分鐘即可抵達。<br>- 快速採買電器、玩具或藥妝。</td><td>視個人消費</td></tr><tr><td><strong>10:45–11:15</strong></td><td>步行前往 Sunshine City</td><td>- 從 Bic Camera 步行至 Sunshine City 約 10 分鐘。</td><td>-</td></tr><tr><td><strong>11:20–14:00</strong></td><td>Chiikawa Park (依預約時間)</td><td>- **核心行程！** 準時在 11:20-11:40 之間入場。<br>- 享受約 2.5 小時的樂園時光。</td><td>門票免費</td></tr><tr><td><strong>14:00–14:30</strong></td><td>交通：池袋 → 銀座</td><td>- 搭乘地鐵**丸之內線**，可**一班車直達**銀座。</td><td>約 210円/人</td></tr><tr><td><strong>14:30–16:00</strong></td><td>午餐：根室花丸</td><td>- **最佳時機！** 抵達 **Tokyu Plaza 銀座店**，這個離峰時段幾乎不用排隊。</td><td>約 6,000-10,000円</td></tr><tr><td><strong>16:00–18:00</strong></td><td>二手精品店巡禮</td><td>- **第一站：Komehyo** (規模大)。<br>- **第二站：Brand Off**。<br>- **第三站：Daikokuya**。</td><td>視個人消費</td></tr><tr><td><strong>18:00–18:45</strong></td><td>中場休息 & 甜點時間</td><td>- **建議地點：銀座三越 B2 美食街**。</td><td>約 2,000-4,000円</td></tr><tr><td><strong>18:45–20:00</strong></td><td>親子購物時光</td><td>- 前往 **Sanrio World GINZA** (西銀座百貨)。</td><td>視個人消費</td></tr><tr><td><strong>20:00~</strong></td><td>返回飯店</td><td>- 從銀座搭地鐵轉 JR 山手線返回品川。</td><td>約 180円/人</td></tr></tbody></table></div>
+                </div>
+                <!-- Day 5 Content -->
+                <div id="plan-day5" class="day-plan-content card">
+                    <h3 class="text-xl font-bold text-center mb-4 text-green-500">Day 5: 🛫 輕鬆離開日</h3>
+                    <div class="overflow-x-auto"><table class="details-table"><thead><tr><th>時間</th><th>活動內容</th><th>備註與建議</th><th>預估費用</th></tr></thead><tbody><tr><td><strong>07:30-10:30</strong></td><td>飯店退房與周邊活動</td><td>- 飯店或車站早餐。<br>- 整理行李並辦理退房。<br>- 可在品川站內 ecute 短暫購物。</td><td>早餐+購物: 約 5,200-8,800円</td></tr><tr><td><strong>10:30-12:30</strong></td><td>前往機場與午餐</td><td>- 搭乘京急空港線直達羽田機場。<br>- 在機場用餐並辦理登機手續。</td><td>交通+午餐: 約 5,050-7,050円</td></tr><tr><td><strong>12:30-14:30</strong></td><td>安檢與登機</td><td>- 通過安檢與海關。<br>- 逛免稅店，準備登機。</td><td>視個人消費</td></tr></tbody></table></div>
+                </div>
+            </section>
+
             <section id="expenses" class="content-section">
                 <h2 class="text-3xl font-bold text-[var(--title-color)] mb-6">每日花費紀錄</h2>
                 <div class="card mb-6">
