@@ -190,7 +190,7 @@
                         <div class="col-span-1"><label class="block text-sm font-medium">日期</label><select id="expense-date" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"><option>9/3</option><option>9/4</option><option>9/5</option><option>9/6</option><option>9/7</option></select></div>
                         <div class="col-span-1"><label class="block text-sm font-medium">時間</label><input type="time" id="expense-time" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"></div>
                         <div class="col-span-1"><label class="block text-sm font-medium">地點</label><input type="text" id="expense-location" placeholder="如: 澀谷" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"></div>
-                        <div class="col-span-1"><label class="block text-sm font-medium">類別</label><select id="expense-category" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"><option>餐飲</option><option>購物</option><option>交通</option><option>景點門票</option><option>住宿</option><option>雜費</option><option>其他</option></select></div>
+                        <div class="col-span-1"><label class="block text-sm font-medium">類別</label><select id="expense-category" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"><option>餐飲</option><option>交通</option><option>購物</option><option>藥妝</option><option>伴手禮</option><option>玩具</option><option>便利商店</option><option>景點門票</option><option>住宿</option><option>雜費</option><option>其他</option></select></div>
                         <div class="col-span-1"><label class="block text-sm font-medium">描述*</label><input type="text" id="expense-desc" placeholder="如: 一蘭拉麵" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm"></div>
                         <div class="col-span-1"><label class="block text-sm font-medium">日幣 (JPY)*</label><input type="number" id="expense-jpy" placeholder="1000" required class="mt-1 w-full rounded-md border-gray-300 shadow-sm"></div>
                         <div class="col-span-1"><label class="block text-sm font-medium">支付方式</label><select id="expense-payment" class="mt-1 w-full rounded-md border-gray-300 shadow-sm"><option>現鈔</option><option>Suica</option><option>信用卡</option><option>行動支付</option></select></div>
@@ -645,71 +645,55 @@
         }
 
         // --- Shopping List Logic ---
-        const shoppingListStorageKey = 'tokyoShoppingList_v2';
-        const initialShoppingList = {
-            mike: [
-                { text: 'THE GUNDAM BASE: MGSD 鋼彈基地限定 自由鋼彈［透明配色］ ($1,980)', checked: false },
-                { text: 'THE GUNDAM BASE: MGSD 獵魔鋼彈 ($1,990)', checked: false }
-            ],
-            edith: [],
-            nini: [],
-            ada: []
-        };
+        const shoppingListContainer = document.getElementById('shopping-list-container');
+        const shoppingListStorageKey = 'tokyoShoppingList_v1';
 
-        function getSuicaTopUps() { return JSON.parse(localStorage.getItem(suicaStorageKey)) || []; }
-        function saveSuicaTopUps(topups) { localStorage.setItem(suicaStorageKey, JSON.stringify(topups)); renderAll(); }
+        function getShoppingList() { return JSON.parse(localStorage.getItem(shoppingListStorageKey)) || { Mike: [], Edith: [], Nini: [], Ada: [] }; }
+        function saveShoppingList(list) { localStorage.setItem(shoppingListStorageKey, JSON.stringify(list)); renderShoppingLists(); }
 
-        function renderSuicaCard() {
-            const topups = getSuicaTopUps();
-            const expenses = getExpenses();
-
-            const totalTopUp = topups.reduce((sum, item) => sum + item.amount, 0);
-            const totalSpent = expenses.filter(e => e.payment === 'Suica').reduce((sum, e) => sum + e.jpy, 0);
-            const balance = totalTopUp - totalSpent;
-
-            suicaBalanceEl.textContent = `¥ ${balance.toLocaleString()}`;
-
-            suicaTopupList.innerHTML = '';
-            if (topups.length > 0) {
-                 topups.forEach((topup, index) => {
-                    const row = document.createElement('tr');
-                    row.className = 'border-b';
-                    row.innerHTML = `
-                        <td class="p-2">${new Date(topup.date).toLocaleDateString()}</td>
-                        <td class="p-2">${topup.amount.toLocaleString()}</td>
-                        <td class="p-2 text-center"><button onclick="deleteSuicaTopUp(${index})" class="text-red-500 hover:text-red-700 text-xs">刪除</button></td>
+        function renderShoppingLists() {
+            const shoppingList = getShoppingList();
+            for (const person in shoppingList) {
+                const listEl = document.getElementById(`shopping-list-${person.toLowerCase()}`);
+                if (listEl) {
+                    listEl.innerHTML = '';
+                    shoppingList[person].forEach((item, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'flex items-center justify-between py-1';
+                        li.innerHTML = `
+                            <label class="flex items-center">
+                                <input type="checkbox" onchange="toggleShopItem('${person}', ${index})" ${item.done ? 'checked' : ''} class="w-5 h-5 mr-3">
+                                <span class="${item.done ? 'line-through text-gray-400' : ''}">${item.text}</span>
+                            </label>
+                            <button onclick="deleteShopItem('${person}', ${index})" class="text-red-400 hover:text-red-600 text-xs">刪除</button>
                     `;
-                    suicaTopupList.appendChild(row);
+                        listEl.appendChild(li);
                 });
-            } else {
-                 suicaTopupList.innerHTML = '<tr><td colspan="3" class="text-center text-gray-400 py-4">尚未有儲值紀錄</td></tr>';
+                }
             }
         }
         
-        function addSuicaTopUp(event) {
-            event.preventDefault();
-            const amountInput = document.getElementById('suica-topup-amount');
-            const amount = parseFloat(amountInput.value);
-            if (isNaN(amount) || amount <= 0) return;
+        function addShopItem(person) {
+            const inputEl = document.getElementById(`new-item-${person.toLowerCase()}`);
+            const text = inputEl.value.trim();
+            if (text === '') return;
 
-            const topups = getSuicaTopUps();
-            topups.push({ date: new Date().toISOString(), amount: amount });
-            saveSuicaTopUps(topups);
-            amountInput.value = '';
-        }
-
-        function deleteSuicaTopUp(index) {
-            if (!confirm('確定要刪除這筆儲值紀錄嗎？')) return;
-            const topups = getSuicaTopUps();
-            topups.splice(index, 1);
-            saveSuicaTopUps(topups);
+            const shoppingList = getShoppingList();
+            shoppingList[person].push({ text: text, done: false });
+            saveShoppingList(shoppingList);
+            inputEl.value = '';
         }
 
         function deleteShopItem(person, index) {
-            const list = getShoppingList();
-            list[person].splice(index, 1);
-            saveShoppingList(list);
-            renderShoppingList();
+            const shoppingList = getShoppingList();
+            shoppingList[person].splice(index, 1);
+            saveShoppingList(shoppingList);
+        }
+        
+        function toggleShopItem(person, index) {
+            const shoppingList = getShoppingList();
+            shoppingList[person][index].done = !shoppingList[person][index].done;
+            saveShoppingList(shoppingList);
         }
 
         // --- Gemini API Logic for OCR ---
@@ -811,7 +795,8 @@
         // --- Event Listeners and Initial Load ---
         document.addEventListener('DOMContentLoaded', () => {
             renderAll();
-            // ... (other initializations)
+            renderShoppingLists();
+            loadCheckboxStates();
         });
 
         expenseForm.addEventListener('submit', addExpense);
@@ -819,6 +804,13 @@
         closeEditModalBtn.addEventListener('click', closeEditModal);
         suicaTopupForm.addEventListener('submit', addSuicaTopUp);
         exportBtn.addEventListener('click', exportToMarkdown);
+        receiptUpload.addEventListener('change', handleImageUpload);
+        
+        // Add event listeners for shopping list forms
+        document.getElementById('new-item-form-mike').addEventListener('submit', (e) => { e.preventDefault(); addShopItem('Mike'); });
+        document.getElementById('new-item-form-edith').addEventListener('submit', (e) => { e.preventDefault(); addShopItem('Edith'); });
+        document.getElementById('new-item-form-nini').addEventListener('submit', (e) => { e.preventDefault(); addShopItem('Nini'); });
+        document.getElementById('new-item-form-ada').addEventListener('submit', (e) => { e.preventDefault(); addShopItem('Ada'); });
 
     </script>
 </body>
